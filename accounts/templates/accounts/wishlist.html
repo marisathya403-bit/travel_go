@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>My Wishlist</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 35px;
+        }
+
+.wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(200px, 1fr)
+    );
+    gap: 25px;
+}
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #7f00ff;
+        }
+
+        .destination {
+            color: #666;
+            font-weight: bold;
+        }
+
+        .empty {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .back {
+            display: block;
+            width: fit-content;
+            margin: 30px auto 0;
+            padding: 12px 25px;
+            border-radius: 30px;
+            background: white;
+            color: #7f00ff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>❤️ My Wishlist</h1>
+
+    {% if wishlist_items %}
+
+        <div class="wishlist-grid">
+
+            {% for item in wishlist_items %}
+
+                <div class="card">
+
+                    <h2>
+                        {{ item.place_name }}
+                    </h2>
+
+                    <p class="destination">
+                        📍 {{ item.destination }}
+                    </p>
+               <form
+    method="POST"
+    action="{% url 'wishlist_remove' item.id %}"
+>
+
+    {% csrf_token %}
+
+    <button
+        type="submit"
+        style="
+            margin-top: 15px;
+            padding: 10px 18px;
+            border: none;
+            border-radius: 25px;
+            background: #ff4b4b;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        "
+    >
+        🗑️ Remove
+    </button>
+
+</form>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>Your wishlist is empty ❤️</h2>
+
+            <p>
+                Add your favourite places
+                from the Places to Visit page.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+    <a href="{% url 'places_to_visit' %}" class="back">
+        ← Explore Places
+    </a>
+
+</div>
+
+</body>
+</html>

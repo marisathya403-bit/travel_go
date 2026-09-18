@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Bus Booking - TravelGo</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            color: #222;
+
+            background: linear-gradient(
+                120deg,
+                #667eea,
+                #764ba2,
+                #ff758c,
+                #00c6ff
+            );
+
+            background-size: 400% 400%;
+
+            animation: gradientMove 12s ease infinite;
+
+            overflow-x: hidden;
+        }
+
+
+        @keyframes gradientMove {
+
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+
+        }
+
+
+        /* FLOATING BUBBLES */
+
+        .bubble {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,0.15);
+
+            backdrop-filter: blur(5px);
+
+            pointer-events: none;
+
+            z-index: 0;
+        }
+
+
+        .bubble1 {
+
+            width: 220px;
+            height: 220px;
+
+            top: 5%;
+            left: -70px;
+
+            animation: floatOne 7s ease-in-out infinite;
+        }
+
+
+        .bubble2 {
+
+            width: 300px;
+            height: 300px;
+
+            right: -100px;
+            bottom: 5%;
+
+            animation: floatTwo 9s ease-in-out infinite;
+        }
+
+
+        .bubble3 {
+
+            width: 100px;
+            height: 100px;
+
+            right: 25%;
+            top: 15%;
+
+            animation: floatThree 6s ease-in-out infinite;
+        }
+
+
+        @keyframes floatOne {
+
+            0%,100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-40px);
+            }
+
+        }
+
+
+        @keyframes floatTwo {
+
+            0%,100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-55px) rotate(20deg);
+            }
+
+        }
+
+
+        @keyframes floatThree {
+
+            0%,100% {
+                transform: translateY(0) scale(1);
+            }
+
+            50% {
+                transform: translateY(-25px) scale(1.15);
+            }
+
+        }
+
+
+        /* NAVBAR */
+
+        .navbar {
+
+            width: 100%;
+
+            padding: 18px 7%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            position: relative;
+
+            z-index: 5;
+
+            background: rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+        }
+
+
+        .logo {
+
+            color: white;
+
+            font-size: 27px;
+
+            font-weight: 800;
+
+            letter-spacing: 1px;
+
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+
+        .logo span {
+
+            color: #ffe66d;
+        }
+
+
+        .back-home {
+
+            text-decoration: none;
+
+            color: white;
+
+            font-weight: 600;
+
+            padding: 10px 20px;
+
+            border-radius: 25px;
+
+            border: 1px solid rgba(255,255,255,0.5);
+
+            transition: 0.3s;
+        }
+
+
+        .back-home:hover {
+
+            background: white;
+
+            color: #764ba2;
+
+            transform: translateY(-3px);
+        }
+
+
+        /* MAIN */
+
+        .container {
+
+            width: 92%;
+
+            max-width: 1150px;
+
+            margin: 45px auto;
+
+            position: relative;
+
+            z-index: 2;
+        }
+
+
+        .heading {
+
+            text-align: center;
+
+            color: white;
+
+            margin-bottom: 30px;
+
+            animation: titleIn 0.9s ease;
+        }
+
+
+        @keyframes titleIn {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(-35px);
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+            }
+
+        }
+
+
+        .heading h1 {
+
+            font-size: 42px;
+
+            margin-bottom: 8px;
+
+            text-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        }
+
+
+        .heading p {
+
+            font-size: 16px;
+
+            opacity: 0.95;
+        }
+
+
+        /* SEARCH CARD */
+
+        .search-card {
+
+            background: rgba(255,255,255,0.94);
+
+            border-radius: 25px;
+
+            padding: 28px;
+
+            box-shadow: 0 25px 60px rgba(0,0,0,0.22);
+
+            margin-bottom: 38px;
+        }
+
+
+        .search-title {
+
+            text-align: center;
+
+            color: #51358c;
+
+            margin-bottom: 22px;
+
+            font-size: 22px;
+        }
+
+
+        .search-form {
+
+            display: grid;
+
+            grid-template-columns: repeat(5, 1fr);
+
+            gap: 15px;
+
+            align-items: end;
+        }
+
+
+        .field label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: #555;
+
+            margin-bottom: 7px;
+        }
+
+
+        .field input,
+        .field select {
+
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 2px solid #e6e6e6;
+
+            border-radius: 13px;
+
+            outline: none;
+
+            font-size: 14px;
+
+            background: white;
+
+            transition: 0.3s;
+        }
+
+
+        .field input:focus,
+        .field select:focus {
+
+            border-color: #764ba2;
+
+            box-shadow: 0 0 15px rgba(118,75,162,0.2);
+
+            transform: translateY(-2px);
+        }
+
+
+        .search-btn {
+
+            border: none;
+
+            padding: 14px;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            background: linear-gradient(
+                90deg,
+                #667eea,
+                #764ba2,
+                #ff758c
+            );
+
+            transition: 0.3s;
+        }
+
+
+        .search-btn:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow: 0 12px 25px rgba(118,75,162,0.35);
+        }
+
+
+        /* RESULTS TITLE */
+
+        .results-title {
+
+            color: white;
+
+            font-size: 25px;
+
+            margin-bottom: 20px;
+
+            text-shadow: 0 4px 12px rgba(0,0,0,0.18);
+        }
+
+
+        /* BUS CARDS */
+
+        .bus-list {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 22px;
+        }
+
+
+        .bus-card {
+
+            background: rgba(255,255,255,0.96);
+
+            border-radius: 23px;
+
+            padding: 24px;
+
+            box-shadow: 0 18px 40px rgba(0,0,0,0.18);
+
+            transition: 0.4s;
+        }
+
+
+        .bus-card:hover {
+
+            transform: translateY(-10px);
+
+            box-shadow: 0 25px 55px rgba(0,0,0,0.25);
+        }
+
+
+        .travel-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+
+        .travel-name {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            color: #4d378e;
+        }
+
+
+        .bus-icon {
+
+            width: 45px;
+
+            height: 45px;
+
+            border-radius: 14px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 25px;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            );
+        }
+
+
+        .rating {
+
+            background: #fff3cd;
+
+            color: #b77900;
+
+            padding: 7px 11px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        /* ROUTE */
+
+        .route {
+
+            display: grid;
+
+            grid-template-columns: 1fr auto 1fr;
+
+            align-items: center;
+
+            gap: 12px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .city {
+
+            text-align: center;
+        }
+
+
+        .city small {
+
+            display: block;
+
+            color: #999;
+
+            font-size: 11px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .city strong {
+
+            color: #333;
+
+            font-size: 18px;
+        }
+
+
+        .route-line {
+
+            width: 100px;
+
+            height: 3px;
+
+            border-radius: 5px;
+
+            background: linear-gradient(
+                90deg,
+                #667eea,
+                #ff758c,
+                #00c6ff
+            );
+
+            position: relative;
+        }
+
+
+        /* DETAILS */
+
+        .details {
+
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+
+            gap: 10px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .detail {
+
+            text-align: center;
+
+            padding: 11px 5px;
+
+            border-radius: 12px;
+
+            background: #f7f7ff;
+        }
+
+
+        .detail span {
+
+            display: block;
+
+            font-size: 11px;
+
+            color: #999;
+
+            margin-bottom: 3px;
+        }
+
+
+        .detail strong {
+
+            color: #4d378e;
+
+            font-size: 13px;
+        }
+
+
+        /* PRICE + BOOK */
+
+        .bottom {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .price small {
+
+            display: block;
+
+            color: #999;
+
+            font-size: 11px;
+        }
+
+
+        .price strong {
+
+            color: #ff4f81;
+
+            font-size: 24px;
+        }
+
+
+        .book-btn {
+
+            border: none;
+
+            padding: 12px 22px;
+
+            border-radius: 13px;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            background: linear-gradient(
+                90deg,
+                #ff758c,
+                #764ba2
+            );
+
+            transition: 0.3s;
+        }
+
+
+        .book-btn:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow: 0 10px 22px rgba(118,75,162,0.3);
+        }
+
+
+        .footer {
+
+            text-align: center;
+
+            color: white;
+
+            margin: 45px 0 25px;
+
+            font-size: 14px;
+        }
+
+
+        @media (max-width: 900px) {
+
+            .search-form {
+
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .bus-list {
+
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                padding: 15px 5%;
+            }
+
+
+            .container {
+
+                width: 94%;
+
+                margin-top: 30px;
+            }
+
+
+            .heading h1 {
+
+                font-size: 32px;
+            }
+
+
+            .search-form {
+
+                grid-template-columns: 1fr;
+            }
+
+
+            .search-card {
+
+                padding: 20px;
+            }
+
+
+            .route-line {
+
+                width: 60px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="bubble bubble1"></div>
+
+    <div class="bubble bubble2"></div>
+
+    <div class="bubble bubble3"></div>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            🧳 Travel<span>Go</span>
+
+        </div>
+
+
+        <a
+            href="{% url 'home' %}"
+            class="back-home"
+        >
+
+            ← Back to Home
+
+        </a>
+
+    </nav>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+
+        <div class="heading">
+
+            <h1>
+
+                🚌 Find Your Perfect Bus
+
+            </h1>
+
+            <p>
+
+                Travel comfortably with our trusted travel partners ✨
+
+            </p>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <section class="search-card">
+
+            <h2 class="search-title">
+
+                🔎 Search Bus
+
+            </h2>
+
+
+            <form
+                class="search-form"
+                onsubmit="return false;"
+            >
+
+
+                <div class="field">
+
+                    <label>
+
+                        📍 From
+
+                    </label>
+
+                    <input
+                        type="text"
+                        id="fromCity"
+                        value="Chennai"
+                        placeholder="Departure city"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+
+                        📍 To
+
+                    </label>
+
+                    <select id="destination">
+
+                        <option
+                            value=""
+                            selected
+                            disabled
+                        >
+                            Select Destination
+                        </option>
+
+                        <option value="Ooty">
+                            Ooty
+                        </option>
+
+                        <option value="Kodaikanal">
+                            Kodaikanal
+                        </option>
+
+                        <option value="Munnar">
+                            Munnar
+                        </option>
+
+                        <option value="Bangalore">
+                            Bangalore
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+
+                        📅 Travel Date
+
+                    </label>
+
+                    <input
+                        type="date"
+                        id="travelDate"
+                    >
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+
+                        👥 Passengers
+
+                    </label>
+
+                    <select id="passengerCount">
+
+                        <option value="1">1 Passenger</option>
+                        <option value="2">2 Passengers</option>
+                        <option value="3">3 Passengers</option>
+                        <option value="4">4 Passengers</option>
+                        <option value="5">5 Passengers</option>
+                        <option value="6">6 Passengers</option>
+                        <option value="7">7 Passengers</option>
+                        <option value="8">8 Passengers</option>
+                        <option value="9">9 Passengers</option>
+                        <option value="10">10 Passengers</option>
+
+                    </select>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    class="search-btn"
+                    onclick="searchBuses()"
+                >
+
+                    🔍 Search Buses
+
+                </button>
+
+
+            </form>
+
+        </section>
+
+
+        <h2 class="results-title">
+
+            🚌 Available Travels
+
+        </h2>
+
+
+        <!-- BUS LIST -->
+
+        <section class="bus-list">
+
+
+            <!-- SATHYA -->
+
+            <div class="bus-card">
+
+                <div class="travel-header">
+
+                    <div class="travel-name">
+
+                        <div class="bus-icon">
+
+                            🚌
+
+                        </div>
+
+                        Sathya Travels
+
+                    </div>
+
+                    <div class="rating">
+
+                        ⭐ 4.8
+
+                    </div>
+
+                </div>
+
+
+                <div class="route">
+
+                    <div class="city">
+
+                        <small>FROM</small>
+
+                        <strong class="from-display">
+                            Chennai
+                        </strong>
+
+                    </div>
+
+
+                    <div class="route-line"></div>
+
+
+                    <div class="city">
+
+                        <small>TO</small>
+
+                        <strong class="destination-display">
+                            Select Destination
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+
+                        <span>Departure</span>
+
+                        <strong>06:00 AM</strong>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span>Arrival</span>
+
+                        <strong>01:30 PM</strong>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span>Type</span>
+
+                        <strong>AC Sleeper</strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="bottom">
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹799</strong>
+
+                    </div>
+
+
+                    <button
+                        class="book-btn"
+                        onclick="bookBus('Sathya Travels', 799)"
+                    >
+
+                        Book Now 🚀
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- ARCHU -->
+
+            <div class="bus-card">
+
+                <div class="travel-header">
+
+                    <div class="travel-name">
+
+                        <div class="bus-icon">
+
+                            🚌
+
+                        </div>
+
+                        Archu Travels
+
+                    </div>
+
+                    <div class="rating">
+
+                        ⭐ 4.7
+
+                    </div>
+
+                </div>
+
+
+                <div class="route">
+
+                    <div class="city">
+
+                        <small>FROM</small>
+
+                        <strong class="from-display">
+                            Chennai
+                        </strong>
+
+                    </div>
+
+
+                    <div class="route-line"></div>
+
+
+                    <div class="city">
+
+                        <small>TO</small>
+
+                        <strong class="destination-display">
+                            Select Destination
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+
+                        <span>Departure</span>
+
+                        <strong>08:30 AM</strong>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span>Arrival</span>
+
+                        <strong>04:00 PM</strong>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span>Type</span>
+
+                        <strong>AC Seater</strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="bottom">
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹699</strong>
+
+                    </div>
+
+
+                    <button
+                        class="book-btn"
+                        onclick="bookBus('Archu Travels', 699)"
+                    >
+
+                        Book Now 🚀
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SUJI -->
+
+            <div class="bus-card">
+
+                <div class="travel-header">
+
+                    <div class="travel-name">
+
+                        <div class="bus-icon">
+
+                            🚌
+
+                        </div>
+
+                        Suji Travels
+
+                    </div>
+
+                    <div class="rating">
+
+                        ⭐ 4.9
+
+                    </div>
+
+                </div>
+
+
+                <div class="route">
+
+                    <div class="city">
+
+                        <small>FROM</small>
+
+                        <strong class="from-display">
+                            Chennai
+                        </strong>
+
+                    </div>
+
+
+                    <div class="route-line"></div>
+
+
+                    <div class="city">
+
+                        <small>TO</small>
+
+                        <strong class="destination-display">
+                            Select Destination
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+
+                        <span>Departure</span>
+
+                        <strong>10:00 PM</strong>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span>Arrival</span>
+
+                        <strong>05:30 AM</strong>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span>Type</span>
+
+                        <strong>AC Sleeper</strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="bottom">
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹899</strong>
+
+                    </div>
+
+
+                    <button
+                        class="book-btn"
+                        onclick="bookBus('Suji Travels', 899)"
+                    >
+
+                        Book Now 🚀
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- SWETHA -->
+
+            <div class="bus-card">
+
+                <div class="travel-header">
+
+                    <div class="travel-name">
+
+                        <div class="bus-icon">
+
+                            🚌
+
+                        </div>
+
+                        Swetha Travels
+
+                    </div>
+
+                    <div class="rating">
+
+                        ⭐ 4.6
+
+                    </div>
+
+                </div>
+
+
+                <div class="route">
+
+                    <div class="city">
+
+                        <small>FROM</small>
+
+                        <strong class="from-display">
+                            Chennai
+                        </strong>
+
+                    </div>
+
+
+                    <div class="route-line"></div>
+
+
+                    <div class="city">
+
+                        <small>TO</small>
+
+                        <strong class="destination-display">
+                            Select Destination
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="details">
+
+                    <div class="detail">
+
+                        <span>Departure</span>
+
+                        <strong>11:30 PM</strong>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span>Arrival</span>
+
+                        <strong>06:30 AM</strong>
+
+                    </div>
+
+                    <div class="detail">
+
+                        <span>Type</span>
+
+                        <strong>Volvo AC</strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="bottom">
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹999</strong>
+
+                    </div>
+
+
+                    <button
+                        class="book-btn"
+                        onclick="bookBus('Swetha Travels', 999)"
+                    >
+
+                        Book Now 🚀
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <div class="footer">
+
+            ✨ TravelGo — Your Journey, Our Responsibility 🚌💜
+
+        </div>
+
+
+    </main>
+
+
+    <script>
+
+
+        /* --------------------------------
+           SET TODAY DATE
+        -------------------------------- */
+
+        const today = new Date();
+
+        const dateString =
+            today.toISOString().split("T")[0];
+
+
+        document.getElementById(
+            "travelDate"
+        ).value = dateString;
+
+
+        document.getElementById(
+            "travelDate"
+        ).min = dateString;
+
+
+        /* --------------------------------
+           UPDATE BUS DESTINATION
+        -------------------------------- */
+
+        function updateBusDestinations() {
+
+            const destination =
+                document.getElementById(
+                    "destination"
+                ).value;
+
+
+            const from =
+                document.getElementById(
+                    "fromCity"
+                ).value.trim() || "Chennai";
+
+
+            const destinationDisplays =
+                document.querySelectorAll(
+                    ".destination-display"
+                );
+
+
+            destinationDisplays.forEach(
+                function(item) {
+
+                    item.textContent =
+                        destination ||
+                        "Select Destination";
+
+                }
+            );
+
+
+            const fromDisplays =
+                document.querySelectorAll(
+                    ".from-display"
+                );
+
+
+            fromDisplays.forEach(
+                function(item) {
+
+                    item.textContent = from;
+
+                }
+            );
+
+        }
+
+
+        /* --------------------------------
+           SEARCH BUS
+        -------------------------------- */
+
+        function searchBuses() {
+
+            const from =
+                document.getElementById(
+                    "fromCity"
+                ).value.trim();
+
+
+            const destination =
+                document.getElementById(
+                    "destination"
+                ).value;
+
+
+            const travelDate =
+                document.getElementById(
+                    "travelDate"
+                ).value;
+
+
+            const passengers =
+                document.getElementById(
+                    "passengerCount"
+                ).value;
+
+
+            if (!from) {
+
+                alert(
+                    "Please enter your departure city."
+                );
+
+                return;
+
+            }
+
+
+            if (!destination) {
+
+                alert(
+                    "Please select your destination."
+                );
+
+                return;
+
+            }
+
+
+            if (!travelDate) {
+
+                alert(
+                    "Please select your travel date."
+                );
+
+                return;
+
+            }
+
+
+            updateBusDestinations();
+
+
+            alert(
+                "🚌 Buses found!\n\n" +
+                "From: " + from + "\n" +
+                "To: " + destination + "\n" +
+                "Date: " + travelDate + "\n" +
+                "Passengers: " + passengers
+            );
+
+        }
+
+
+        /* --------------------------------
+           UPDATE AUTOMATICALLY
+           WHEN DESTINATION CHANGES
+        -------------------------------- */
+
+        document.getElementById(
+            "destination"
+        ).addEventListener(
+            "change",
+            updateBusDestinations
+        );
+
+
+        document.getElementById(
+            "fromCity"
+        ).addEventListener(
+            "input",
+            updateBusDestinations
+        );
+
+
+        /* --------------------------------
+           BOOK NOW
+        -------------------------------- */
+
+        function bookBus(
+            travelName,
+            price
+        ) {
+
+
+            const from =
+                document.getElementById(
+                    "fromCity"
+                ).value.trim();
+
+
+            const destination =
+                document.getElementById(
+                    "destination"
+                ).value;
+
+
+            const passengers =
+                document.getElementById(
+                    "passengerCount"
+                ).value;
+
+
+            const travelDate =
+                document.getElementById(
+                    "travelDate"
+                ).value;
+
+
+            if (!from) {
+
+                alert(
+                    "Please enter your departure city."
+                );
+
+                return;
+
+            }
+
+
+            if (!destination) {
+
+                alert(
+                    "Please select your destination first."
+                );
+
+                return;
+
+            }
+
+
+            if (!travelDate) {
+
+                alert(
+                    "Please select your travel date first."
+                );
+
+                return;
+
+            }
+
+
+            const url =
+
+                "{% url 'seat_selection' %}" +
+
+                "?travel=" +
+                encodeURIComponent(travelName) +
+
+                "&destination=" +
+                encodeURIComponent(destination) +
+
+                "&from=" +
+                encodeURIComponent(from) +
+
+                "&passengers=" +
+                encodeURIComponent(passengers) +
+
+                "&price=" +
+                encodeURIComponent(price) +
+
+                "&date=" +
+                encodeURIComponent(travelDate);
+
+
+            window.location.href = url;
+
+        }
+
+
+    </script>
+
+
+</body>
+
+</html>

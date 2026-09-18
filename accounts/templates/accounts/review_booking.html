@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Review Booking - TravelGo</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2,
+                #ff758c
+            );
+
+            padding: 40px 20px;
+
+        }
+
+
+        .container {
+
+            width: 100%;
+            max-width: 850px;
+
+            margin: auto;
+
+            background: white;
+
+            padding: 35px;
+
+            border-radius: 25px;
+
+            box-shadow:
+                0 20px 60px rgba(0,0,0,0.25);
+
+        }
+
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .header h1 {
+
+            color: #51358c;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .header p {
+
+            color: #777;
+
+        }
+
+
+        .review-box {
+
+            background: #f5f3ff;
+
+            border-radius: 15px;
+
+            padding: 25px;
+
+            margin-bottom: 25px;
+
+            border-left: 6px solid #764ba2;
+
+        }
+
+
+        .review-box h2 {
+
+            color: #51358c;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 13px 0;
+
+            border-bottom: 1px solid #ddd;
+
+        }
+
+
+        .row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .row span {
+
+            color: #666;
+
+        }
+
+
+        .row strong {
+
+            color: #333;
+
+        }
+
+
+        .total {
+
+            color: #e8436f !important;
+
+            font-size: 22px;
+
+        }
+
+
+        .confirm-btn {
+
+            width: 100%;
+
+            padding: 16px;
+
+            border: none;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                90deg,
+                #ff758c,
+                #764ba2
+            );
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        .confirm-btn:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(118,75,162,0.35);
+
+        }
+
+
+        .back-link {
+
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            text-decoration: none;
+
+            color: #764ba2;
+
+            font-weight: bold;
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .container {
+
+                padding: 25px 18px;
+
+            }
+
+
+            .row {
+
+                flex-direction: column;
+
+                gap: 5px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="container">
+
+
+        <a
+            href="{% url 'passenger_details' %}"
+            class="back-link"
+        >
+            ← Back to Passenger Details
+        </a>
+
+
+        <div class="header">
+
+            <h1>
+                📋 Review Your Booking
+            </h1>
+
+            <p>
+                Please check your booking details before confirming.
+            </p>
+
+        </div>
+
+
+        <!-- JOURNEY DETAILS -->
+
+        <div class="review-box">
+
+            <h2>
+                🚌 Journey Details
+            </h2>
+
+
+            <div class="row">
+
+                <span>
+                    Travel
+                </span>
+
+                <strong>
+                    {{ booking.travel_name }}
+                </strong>
+
+            </div>
+
+
+            <div class="row">
+
+                <span>
+                    Route
+                </span>
+
+                <strong>
+                    Chennai → {{ booking.destination }}
+                </strong>
+
+            </div>
+
+
+            <div class="row">
+
+                <span>
+                    Selected Seats
+                </span>
+
+                <strong>
+                    {{ booking.selected_seats }}
+                </strong>
+
+            </div>
+
+
+            <div class="row">
+
+                <span>
+                    Total Amount
+                </span>
+
+                <strong class="total">
+                    ₹{{ booking.total_amount }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- PASSENGER DETAILS -->
+
+        <div class="review-box">
+
+            <h2>
+                👤 Passenger Details
+            </h2>
+
+
+            <div class="row">
+
+                <span>
+                    Full Name
+                </span>
+
+                <strong>
+                    {{ booking.passenger_name }}
+                </strong>
+
+            </div>
+
+
+            <div class="row">
+
+                <span>
+                    Age
+                </span>
+
+                <strong>
+                    {{ booking.passenger_age }}
+                </strong>
+
+            </div>
+
+
+            <div class="row">
+
+                <span>
+                    Gender
+                </span>
+
+                <strong>
+                    {{ booking.passenger_gender }}
+                </strong>
+
+            </div>
+
+
+            <div class="row">
+
+                <span>
+                    Mobile Number
+                </span>
+
+                <strong>
+                    {{ booking.mobile_number }}
+                </strong>
+
+            </div>
+
+
+            <div class="row">
+
+                <span>
+                    Email Address
+                </span>
+
+                <strong>
+                    {{ booking.email }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- CONFIRM BOOKING -->
+
+        <form
+            method="POST"
+            action="{% url 'booking_success' %}"
+        >
+
+            {% csrf_token %}
+
+            <button
+                type="submit"
+                class="confirm-btn"
+            >
+                Confirm Booking 🎉
+            </button>
+
+        </form>
+
+
+    </div>
+
+
+</body>
+
+</html>

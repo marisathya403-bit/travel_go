@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Destinations - TravelGo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8fc;
+            color: #1f2937;
+        }
+
+        .navbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1268a8;
+        }
+
+        .logo span {
+            color: #ff5f3d;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #263244;
+            font-weight: 600;
+        }
+
+        .nav-links a:hover {
+            color: #ff5f3d;
+        }
+
+        .page-header {
+            text-align: center;
+            padding: 55px 20px 35px;
+        }
+
+        .page-header h1 {
+            font-size: 40px;
+            color: #172033;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: #687386;
+            font-size: 17px;
+        }
+
+        .destination-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            padding-bottom: 60px;
+        }
+
+        .destination-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .destination-image {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .no-image {
+            width: 100%;
+            height: 220px;
+            background: #dfeaf3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #687386;
+        }
+
+        .card-content {
+            padding: 24px;
+        }
+
+        .state {
+            color: #1268a8;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .card-content h2 {
+            font-size: 25px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: #687386;
+            line-height: 1.6;
+            min-height: 70px;
+        }
+
+        .best-time {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .budget {
+            margin-top: 15px;
+            font-weight: bold;
+            color: #172033;
+        }
+
+        .explore-btn {
+            display: inline-block;
+            margin-top: 18px;
+            color: #ff5f3d;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        @media (max-width: 900px) {
+            .destination-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 12px;
+            }
+
+            .destination-container {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+
+        <div class="logo">
+            Travel<span>Go</span> ✈
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+
+            <li>
+                <a href="{% url 'destination_list' %}">
+                    Destinations
+                </a>
+            </li>
+
+            <li><a href="#">Why TravelGo</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+
+    </nav>
+
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+
+        <h1>Explore Destinations</h1>
+
+        <p>
+            Discover beautiful places and plan your perfect journey.
+        </p>
+
+    </section>
+
+
+    <!-- DESTINATIONS -->
+    <section class="destination-container">
+
+        {% for destination in destinations %}
+
+        <div class="destination-card">
+
+            {% if destination.image %}
+
+                <img
+                    src="{{ destination.image.url }}"
+                    alt="{{ destination.name }}"
+                    class="destination-image"
+                >
+
+            {% else %}
+
+                <div class="no-image">
+                    No Image Available
+                </div>
+
+            {% endif %}
+
+
+            <div class="card-content">
+
+                <div class="state">
+                    {{ destination.state }}
+                </div>
+
+                <h2>
+                    {{ destination.name }}
+                </h2>
+
+                <p class="description">
+                    {{ destination.description }}
+                </p>
+
+                <p class="best-time">
+                    <strong>Best Time:</strong>
+                    {{ destination.best_time }}
+                </p>
+
+                <p class="budget">
+                    From ₹{{ destination.average_budget }}
+                </p>
+
+                <a href="#" class="explore-btn">
+                    Explore →
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+
+        <p style="text-align:center; width:100%;">
+            No destinations available.
+        </p>
+
+        {% endfor %}
+
+    </section>
+
+</body>
+</html>

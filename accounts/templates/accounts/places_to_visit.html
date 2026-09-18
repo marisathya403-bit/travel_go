@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Places to Visit | TravelGo</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #667eea,
+                    #764ba2,
+                    #f093fb,
+                    #4facfe
+                );
+
+            background-size: 400% 400%;
+
+            animation: backgroundMove 12s ease infinite;
+
+            padding: 40px 20px;
+
+            overflow-x: hidden;
+        }
+
+
+        /* ================= BACKGROUND ANIMATION ================= */
+
+        @keyframes backgroundMove {
+
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+
+        }
+
+
+        /* ================= BACK TO HOME ================= */
+
+        .back-home {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            margin: 0 auto 30px;
+
+            padding: 11px 20px;
+
+            border-radius: 30px;
+
+            background:
+                rgba(255, 255, 255, 0.95);
+
+            color: #4f46e5;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 8px 25px
+                rgba(0, 0, 0, 0.15);
+
+            transition:
+                transform 0.3s ease,
+                box-shadow 0.3s ease,
+                background 0.3s ease;
+
+            animation: fadeDown 0.8s ease;
+
+        }
+
+
+        .back-home:hover {
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 14px 30px
+                rgba(0, 0, 0, 0.22);
+
+            background: white;
+
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .header {
+
+            text-align: center;
+
+            margin-bottom: 50px;
+
+            animation:
+                fadeDown 1s ease;
+
+        }
+
+
+        .header h1 {
+
+            font-size: 48px;
+
+            color: white;
+
+            letter-spacing: 1px;
+
+            text-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.25);
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .header p {
+
+            font-size: 18px;
+
+            color: white;
+
+            opacity: 0.9;
+
+        }
+
+
+        /* ================= CONTAINER ================= */
+
+        .places-container {
+
+            max-width: 1200px;
+
+            margin: auto;
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(250px, 1fr)
+                );
+
+            gap: 30px;
+
+        }
+
+
+        /* ================= CARD ================= */
+
+        .destination-card {
+
+            position: relative;
+
+            height: 360px;
+
+            border-radius: 25px;
+
+            overflow: hidden;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 15px 35px
+                rgba(0, 0, 0, 0.25);
+
+            animation:
+                cardAppear 0.8s ease backwards;
+
+            transition:
+                transform 0.4s ease,
+                box-shadow 0.4s ease;
+
+        }
+
+
+        /* ================= CARD DELAYS ================= */
+
+        .destination-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .destination-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .destination-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .destination-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+
+        /* ================= CARD HOVER ================= */
+
+        .destination-card:hover {
+
+            transform:
+                translateY(-15px)
+                scale(1.03);
+
+            box-shadow:
+                0 25px 50px
+                rgba(0, 0, 0, 0.35);
+
+        }
+
+
+        /* ================= IMAGE ================= */
+
+        .destination-card img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            transition:
+                transform 0.7s ease,
+                filter 0.7s ease;
+
+        }
+
+
+        .destination-card:hover img {
+
+            transform:
+                scale(1.15);
+
+            filter:
+                brightness(0.75);
+
+        }
+
+
+        /* ================= OVERLAY ================= */
+
+        .destination-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background:
+                linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0.9),
+                    rgba(0, 0, 0, 0.1),
+                    transparent
+                );
+
+            z-index: 1;
+
+        }
+
+
+        /* ================= GLOW BORDER ================= */
+
+        .destination-card::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: 0;
+
+            border-radius: 25px;
+
+            border:
+                2px solid
+                rgba(255, 255, 255, 0.5);
+
+            opacity: 0;
+
+            transition:
+                opacity 0.4s ease;
+
+            z-index: 3;
+
+        }
+
+
+        .destination-card:hover::after {
+
+            opacity: 1;
+
+        }
+
+
+        /* ================= CARD CONTENT ================= */
+
+        .card-content {
+
+            position: absolute;
+
+            left: 0;
+
+            bottom: 0;
+
+            width: 100%;
+
+            padding: 28px;
+
+            z-index: 2;
+
+            color: white;
+
+        }
+
+
+        .card-content h2 {
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+
+            transform:
+                translateY(15px);
+
+            transition:
+                transform 0.4s ease;
+
+        }
+
+
+        .card-content p {
+
+            font-size: 15px;
+
+            opacity: 0;
+
+            transform:
+                translateY(20px);
+
+            transition:
+                opacity 0.4s ease,
+                transform 0.4s ease;
+
+        }
+
+
+        /* ================= EXPLORE BUTTON ================= */
+
+        .explore {
+
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 10px 22px;
+
+            border-radius: 30px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #ff9966,
+                    #ff5e62
+                );
+
+            color: white;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            opacity: 0;
+
+            transform:
+                translateY(20px);
+
+            transition:
+                opacity 0.4s ease,
+                transform 0.4s ease;
+
+            box-shadow:
+                0 5px 15px
+                rgba(0, 0, 0, 0.2);
+
+        }
+
+
+        /* ================= HOVER CONTENT ================= */
+
+        .destination-card:hover h2 {
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .destination-card:hover p {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .destination-card:hover .explore {
+
+            opacity: 1;
+
+            transform:
+                translateY(0);
+
+        }
+
+
+        .explore:hover {
+
+            transform:
+                scale(1.08) !important;
+
+        }
+
+
+        /* ================= ANIMATIONS ================= */
+
+        @keyframes fadeDown {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(-40px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        @keyframes cardAppear {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(50px)
+                    scale(0.95);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0)
+                    scale(1);
+
+            }
+
+        }
+
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding:
+                    30px 15px;
+
+            }
+
+
+            .back-home {
+
+                margin-bottom: 25px;
+
+                font-size: 13px;
+
+                padding:
+                    10px 17px;
+
+            }
+
+
+            .header h1 {
+
+                font-size: 34px;
+
+            }
+
+
+            .header p {
+
+                font-size: 15px;
+
+            }
+
+
+            .destination-card {
+
+                height: 320px;
+
+            }
+
+
+            .card-content h2 {
+
+                font-size: 26px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= BACK TO HOME ================= -->
+
+    <a href="/" class="back-home">
+        ← Back to Home
+    </a>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <div class="header">
+
+        <h1>
+            ✈️ Places to Visit
+        </h1>
+
+        <p>
+            Discover beautiful destinations and create unforgettable memories
+        </p>
+
+    </div>
+
+
+    <!-- ================= DESTINATION CARDS ================= -->
+
+    <div class="places-container">
+
+
+        {% for destination in destinations %}
+
+
+        <a
+            href="{% url 'destination_places' destination.name|lower %}"
+            class="destination-card"
+        >
+
+
+            <img
+                src="{{ destination.image }}"
+                alt="{{ destination.name }}"
+            >
+
+
+            <div class="card-content">
+
+
+                <h2>
+                    {{ destination.name }}
+                </h2>
+
+
+                <p>
+                    Discover amazing places and beautiful experiences
+                </p>
+
+
+                <span class="explore">
+
+                    Explore Now →
+
+                </span>
+
+
+            </div>
+
+
+        </a>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+</body>
+
+</html>

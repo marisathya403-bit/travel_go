@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelGo - Account Created</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", "Segoe UI", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+
+            background:
+                radial-gradient(circle at 5% 10%, #24b6ff 0%, transparent 22%),
+                radial-gradient(circle at 95% 20%, #ff7eb3 0%, transparent 20%),
+                radial-gradient(circle at 90% 90%, #9b35ff 0%, transparent 25%),
+                linear-gradient(135deg, #062c43, #123d5b 45%, #32194d);
+        }
+
+        /* Background glowing circles */
+        body::before,
+        body::after {
+            content: "";
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(4px);
+            opacity: 0.5;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        body::before {
+            width: 180px;
+            height: 180px;
+            background: #00d9ff;
+            top: -70px;
+            left: -60px;
+        }
+
+        body::after {
+            width: 170px;
+            height: 170px;
+            background: #ff4fd8;
+            right: -60px;
+            bottom: -50px;
+            animation-delay: 1.5s;
+        }
+
+        .container {
+            position: relative;
+            width: 940px;
+            min-height: 585px;
+            display: grid;
+            grid-template-columns: 42% 58%;
+            overflow: hidden;
+
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 30px;
+
+            background: rgba(255,255,255,0.95);
+            box-shadow:
+                0 30px 80px rgba(0,0,0,0.35),
+                0 0 40px rgba(72,211,255,0.15);
+
+            animation: appear 0.8s ease;
+        }
+
+        /* LEFT SIDE */
+        .left {
+            position: relative;
+            padding: 58px 42px;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(13,126,164,0.98),
+                    rgba(49,65,128,0.98) 55%,
+                    rgba(77,52,112,0.98)
+                );
+        }
+
+        .left::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(0, 218, 255, 0.16);
+            right: -150px;
+            top: -120px;
+        }
+
+        .left::after {
+            content: "";
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border-radius: 50%;
+            background: rgba(255, 115, 218, 0.12);
+            left: -130px;
+            bottom: -120px;
+        }
+
+        .logo {
+            position: relative;
+            z-index: 2;
+            font-size: 27px;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 70px;
+        }
+
+        .logo span {
+            background: linear-gradient(90deg, #42d9ff, #ff7acb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .travel-icon {
+            position: relative;
+            z-index: 2;
+            font-size: 48px;
+            margin-bottom: 22px;
+            display: inline-block;
+            animation: busMove 3s ease-in-out infinite;
+        }
+
+        .left h1 {
+            position: relative;
+            z-index: 2;
+            color: white;
+            font-size: 42px;
+            line-height: 1.08;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .left h1 span {
+            display: block;
+            background: linear-gradient(
+                90deg,
+                #35d7ff,
+                #8e8cff,
+                #ff7dbd
+            );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            position: relative;
+            z-index: 2;
+            color: rgba(255,255,255,0.78);
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .features {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .feature-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(135deg, #21d4fd, #6c5ce7);
+            box-shadow: 0 5px 15px rgba(33,212,253,0.35);
+        }
+
+        /* RIGHT SIDE */
+        .right {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(
+                135deg,
+                #ffffff,
+                #f8f9ff
+            );
+        }
+
+        .success-content {
+            width: 100%;
+            animation: slideUp 0.8s ease 0.2s both;
+        }
+
+        .success-icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 25px;
+
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 39px;
+            color: white;
+
+            background: linear-gradient(
+                135deg,
+                #12d890,
+                #08b8c8
+            );
+
+            box-shadow:
+                0 12px 30px rgba(18,216,144,0.3);
+
+            animation: pop 0.8s ease 0.5s both;
+        }
+
+        .success-content h2 {
+            color: #17233d;
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .success-content .welcome {
+            color: #7d889d;
+            font-size: 15px;
+            margin-bottom: 38px;
+        }
+
+        /* TravelGo summary card */
+        .travel-card {
+            max-width: 440px;
+            margin: auto;
+            padding: 25px;
+            border-radius: 20px;
+
+            background: linear-gradient(
+                135deg,
+                #eefaff,
+                #fff4fb
+            );
+
+            border: 1px solid rgba(72,211,255,0.25);
+
+            box-shadow:
+                0 15px 35px rgba(50,70,120,0.08);
+        }
+
+        .travel-card-title {
+            color: #25314b;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .journey {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            color: #63708a;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .journey .circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                #27c9ff,
+                #7c5cff
+            );
+
+            color: white;
+            font-size: 18px;
+        }
+
+        .line {
+            width: 55px;
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                #31cdfd,
+                #c56aff
+            );
+        }
+
+        .continue-btn {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 14px 28px;
+
+            border-radius: 13px;
+            border: none;
+
+            text-decoration: none;
+            color: white;
+            font-size: 14px;
+            font-weight: 700;
+
+            background: linear-gradient(
+                90deg,
+                #17bfff,
+                #754cff
+            );
+
+            box-shadow:
+                0 10px 25px rgba(72,100,255,0.25);
+
+            transition: 0.3s ease;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow:
+                0 15px 30px rgba(72,100,255,0.35);
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.97);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pop {
+            0% {
+                transform: scale(0);
+            }
+            70% {
+                transform: scale(1.12);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes busMove {
+            0%, 100% {
+                transform: translateX(0) rotate(0deg);
+            }
+            50% {
+                transform: translateX(12px) rotate(-2deg);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(20px);
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 850px) {
+            body {
+                padding: 20px;
+                overflow: auto;
+            }
+
+            .container {
+                width: 100%;
+                grid-template-columns: 1fr;
+            }
+
+            .left {
+                padding: 40px 30px;
+            }
+
+            .logo {
+                margin-bottom: 35px;
+            }
+
+            .left h1 {
+                font-size: 34px;
+            }
+
+            .right {
+                padding: 45px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT -->
+    <div class="left">
+
+        <div class="logo">
+            🚌 <span>TravelGo</span>
+        </div>
+
+        <!-- Plane removed -->
+        <div class="travel-icon">🚌</div>
+
+        <h1>
+            Your journey
+            <span>starts here.</span>
+        </h1>
+
+        <p class="description">
+            Create your TravelGo account and make every
+            trip easier, smarter and more memorable.
+        </p>
+
+        <div class="features">
+
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                Easy bus booking
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                Discover hotels & places
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                Plan your complete trip
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✓</div>
+                Track your travel budget
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT -->
+    <div class="right">
+
+        <div class="success-content">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h2>Account Created!</h2>
+
+            <p class="welcome">
+                Welcome to TravelGo. Your journey starts now 🚌
+            </p>
+
+            <div class="travel-card">
+
+                <div class="travel-card-title">
+                    🗺️ Ready for your next journey?
+                </div>
+
+                <div class="journey">
+
+                    <div class="circle">📍</div>
+
+                    <div>Explore</div>
+
+                    <div class="line"></div>
+
+                    <div>Travel</div>
+
+                    <div class="circle">🚌</div>
+
+                </div>
+
+            </div>
+
+            <a href="/accounts/login/" class="continue-btn">
+                Continue to Login →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

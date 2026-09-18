@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Account Created - TravelGo</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(
+                135deg,
+                #071f35,
+                #123f63,
+                #4b3692,
+                #764ba2
+            );
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 20px;
+
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1100px;
+
+            min-height: 600px;
+
+            display: flex;
+
+            background: rgba(255, 255, 255, 0.96);
+
+            border-radius: 30px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 25px 70px rgba(0, 0, 0, 0.30);
+        }
+
+        /* LEFT SIDE */
+
+        .left {
+            width: 40%;
+
+            padding: 55px 45px;
+
+            background: linear-gradient(
+                160deg,
+                #087fae,
+                #2878ca,
+                #49358f
+            );
+
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+
+            margin-bottom: 55px;
+        }
+
+        .logo span {
+            color: #ff79b0;
+        }
+
+        .bus {
+            font-size: 55px;
+
+            margin-bottom: 20px;
+        }
+
+        .left h2 {
+            font-size: 42px;
+            line-height: 1.1;
+
+            margin-bottom: 20px;
+        }
+
+        .left h2 span {
+            color: #69dfff;
+        }
+
+        .left p {
+            font-size: 15px;
+            line-height: 1.7;
+
+            color: rgba(255,255,255,0.85);
+
+            margin-bottom: 30px;
+        }
+
+        .features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .check {
+            width: 30px;
+            height: 30px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                #25d9ff,
+                #7655ff
+            );
+
+            flex-shrink: 0;
+        }
+
+
+        /* RIGHT SIDE */
+
+        .right {
+            width: 60%;
+
+            padding: 55px 50px;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 76px;
+            height: 76px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(
+                135deg,
+                #10c98b,
+                #00b8c8
+            );
+
+            color: white;
+
+            font-size: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 28px;
+
+            box-shadow:
+                0 15px 35px rgba(0, 190, 170, 0.25);
+        }
+
+        .right h1 {
+            font-size: 34px;
+
+            color: #172238;
+
+            margin-bottom: 10px;
+        }
+
+        .welcome {
+            color: #8994a8;
+
+            font-size: 15px;
+
+            margin-bottom: 35px;
+        }
+
+        .journey-box {
+            width: 100%;
+            max-width: 520px;
+
+            padding: 25px;
+
+            border-radius: 20px;
+
+            background: linear-gradient(
+                135deg,
+                #f0fbff,
+                #fff5fc
+            );
+
+            border: 1px solid #dbeaff;
+
+            margin-bottom: 30px;
+        }
+
+        .journey-title {
+            font-size: 16px;
+
+            font-weight: 700;
+
+            color: #26354d;
+
+            margin-bottom: 20px;
+        }
+
+        .journey {
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            gap: 18px;
+        }
+
+        .circle {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                135deg,
+                #18c9ff,
+                #7155ff
+            );
+
+            color: white;
+
+            font-size: 20px;
+        }
+
+        .line {
+            width: 55px;
+            height: 2px;
+
+            background: linear-gradient(
+                90deg,
+                #3bbfff,
+                #8c4fff
+            );
+        }
+
+        .journey-text {
+            font-size: 13px;
+
+            color: #71809a;
+
+            font-weight: 600;
+        }
+
+        .login-btn {
+            display: inline-block;
+
+            padding: 15px 30px;
+
+            border-radius: 14px;
+
+            background: linear-gradient(
+                90deg,
+                #19bfff,
+                #6950f5
+            );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            box-shadow:
+                0 12px 25px rgba(80, 100, 240, 0.25);
+
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 16px 30px rgba(80, 100, 240, 0.35);
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .container {
+                flex-direction: column;
+            }
+
+            .left,
+            .right {
+                width: 100%;
+            }
+
+            .left {
+                padding: 35px 30px;
+            }
+
+            .logo {
+                margin-bottom: 25px;
+            }
+
+            .left h2 {
+                font-size: 32px;
+            }
+
+            .right {
+                padding: 40px 25px;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- LEFT -->
+
+    <div class="left">
+
+        <div class="logo">
+            🚌 <span>TravelGo</span>
+        </div>
+
+        <div class="bus">
+            🚌
+        </div>
+
+        <h2>
+            Your journey<br>
+            <span>starts here.</span>
+        </h2>
+
+        <p>
+            Create your TravelGo account and make every
+            trip easier, smarter and more memorable.
+        </p>
+
+        <div class="features">
+
+            <div class="feature">
+                <div class="check">✓</div>
+                Easy bus booking
+            </div>
+
+            <div class="feature">
+                <div class="check">✓</div>
+                Discover hotels & places
+            </div>
+
+            <div class="feature">
+                <div class="check">✓</div>
+                Plan your complete trip
+            </div>
+
+            <div class="feature">
+                <div class="check">✓</div>
+                Track your travel budget
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RIGHT -->
+
+    <div class="right">
+
+        <div class="success-icon">
+            ✓
+        </div>
+
+        <h1>
+            Account Created!
+        </h1>
+
+        <p class="welcome">
+            Welcome to TravelGo. Your journey starts now 🚌
+        </p>
+
+
+        <div class="journey-box">
+
+            <div class="journey-title">
+                🗺️ Ready for your next journey?
+            </div>
+
+            <div class="journey">
+
+                <div class="circle">
+                    📍
+                </div>
+
+                <span class="journey-text">
+                    Explore
+                </span>
+
+                <div class="line"></div>
+
+                <span class="journey-text">
+                    Travel
+                </span>
+
+                <div class="circle">
+                    🚌
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <a href="{% url 'login' %}" class="login-btn">
+            Continue to Login →
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

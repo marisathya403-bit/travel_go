@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Hotel Finder - TravelGo</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+
+        body {
+            min-height: 100vh;
+
+            background: linear-gradient(
+                120deg,
+                #667eea,
+                #764ba2,
+                #ff758c,
+                #00c6ff
+            );
+
+            background-size: 400% 400%;
+            animation: gradientMove 12s ease infinite;
+            overflow-x: hidden;
+        }
+
+
+        @keyframes gradientMove {
+
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+
+        }
+
+
+        /* NAVBAR */
+
+        .navbar {
+            width: 100%;
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(15px);
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.3);
+        }
+
+
+        .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+
+        .logo span {
+            color: #ffe66d;
+        }
+
+
+        .back-home {
+            text-decoration: none;
+            color: white;
+
+            padding: 10px 20px;
+
+            border-radius: 25px;
+
+            border:
+                1px solid rgba(255,255,255,0.5);
+
+            font-weight: 600;
+
+            transition: 0.3s;
+        }
+
+
+        .back-home:hover {
+            background: white;
+            color: #764ba2;
+            transform: translateY(-3px);
+        }
+
+
+        /* MAIN */
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 45px auto;
+        }
+
+
+        /* HEADING */
+
+        .heading {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+
+        .heading h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+
+            text-shadow:
+                0 5px 20px rgba(0,0,0,0.25);
+        }
+
+
+        .heading p {
+            font-size: 16px;
+        }
+
+
+        /* SEARCH BOX */
+
+        .search-box {
+            max-width: 700px;
+            margin: auto;
+
+            background: rgba(255,255,255,0.95);
+
+            padding: 25px;
+            border-radius: 22px;
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,0.2);
+
+            display: flex;
+            gap: 15px;
+            align-items: end;
+
+            margin-bottom: 45px;
+        }
+
+
+        .field {
+            flex: 1;
+        }
+
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+
+            color: #555;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+
+        .field select {
+            width: 100%;
+
+            padding: 14px;
+
+            border: 2px solid #e5e5e5;
+
+            border-radius: 12px;
+
+            font-size: 15px;
+
+            outline: none;
+        }
+
+
+        .field select:focus {
+            border-color: #764ba2;
+        }
+
+
+        .search-btn {
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                90deg,
+                #ff758c,
+                #764ba2
+            );
+
+            color: white;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+        }
+
+
+        .search-btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(118,75,162,0.35);
+        }
+
+
+        /* RESULTS */
+
+        .results-title {
+            color: white;
+
+            text-align: center;
+
+            font-size: 28px;
+
+            margin-bottom: 25px;
+        }
+
+
+        /* HOTEL GRID */
+
+        .hotel-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+        }
+
+
+        /* HOTEL CARD */
+
+        .hotel-card {
+            background: rgba(255,255,255,0.97);
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 18px 40px rgba(0,0,0,0.2);
+
+            transition: 0.3s;
+
+            display: none;
+        }
+
+
+        .hotel-card.show {
+            display: block;
+
+            animation:
+                hotelIn 0.5s ease;
+        }
+
+
+        @keyframes hotelIn {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+
+        }
+
+
+        .hotel-card:hover {
+            transform:
+                translateY(-8px);
+
+            box-shadow:
+                0 25px 50px rgba(0,0,0,0.25);
+        }
+
+
+        /* HOTEL IMAGE */
+
+        .hotel-image {
+            width: 100%;
+            height: 210px;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        .hotel-content {
+            padding: 22px;
+        }
+
+
+        .hotel-name {
+            color: #51358c;
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+        }
+
+
+        .rating {
+            display: inline-block;
+
+            background: #fff3cd;
+
+            color: #b77900;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 15px;
+        }
+
+
+        .hotel-info {
+            border-top:
+                1px solid #eee;
+
+            padding-top: 12px;
+        }
+
+
+        .hotel-info p {
+            color: #666;
+
+            font-size: 14px;
+
+            margin: 9px 0;
+
+            line-height: 1.5;
+        }
+
+
+        .hotel-info strong {
+            color: #333;
+        }
+
+
+        .contact {
+            color: #764ba2 !important;
+            font-weight: 600;
+        }
+
+
+        .price {
+            margin-top: 15px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid #eee;
+        }
+
+
+        .price small {
+            display: block;
+            color: #999;
+        }
+
+
+        .price strong {
+            color: #ff4f81;
+            font-size: 24px;
+        }
+
+
+        /* FOOTER */
+
+        .footer {
+            text-align: center;
+
+            color: white;
+
+            margin: 50px 0 25px;
+
+            opacity: 0.9;
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .hotel-grid {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                padding: 15px 5%;
+            }
+
+
+            .logo {
+                font-size: 22px;
+            }
+
+
+            .heading h1 {
+                font-size: 32px;
+            }
+
+
+            .search-box {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+
+            .hotel-grid {
+                grid-template-columns:
+                    1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+            🧳 Travel<span>Go</span>
+        </div>
+
+
+        <a
+            href="{% url 'home' %}"
+            class="back-home"
+        >
+            ← Back to Home
+        </a>
+
+    </nav>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+
+        <div class="heading">
+
+            <h1>
+                🏨 Find Your Perfect Hotel
+            </h1>
+
+            <p>
+                Discover comfortable stays for your next journey ✨
+            </p>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <div class="field">
+
+                <label>
+                    📍 Select Destination
+                </label>
+
+                <select id="destination">
+
+                    <option value="">
+                        Select Destination
+                    </option>
+
+                    <option value="Ooty">
+                        Ooty
+                    </option>
+
+                    <option value="Kodaikanal">
+                        Kodaikanal
+                    </option>
+
+                    <option value="Munnar">
+                        Munnar
+                    </option>
+
+                    <option value="Bangalore">
+                        Bangalore
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="search-btn"
+                onclick="searchHotels()"
+            >
+                🔍 Search Hotels
+            </button>
+
+        </div>
+
+
+        <h2
+            class="results-title"
+            id="resultsTitle"
+        >
+            Select a destination to find hotels 🏨
+        </h2>
+
+
+        <!-- HOTEL GRID -->
+
+        <section class="hotel-grid">
+
+
+            <!-- ================= OOTY ================= -->
+
+
+            <div class="hotel-card" data-city="Ooty">
+
+                <img
+                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Ooty Hill Resort"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Ooty Hill Resort
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.8
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Ettines Road
+                        </p>
+
+                        <p>
+                            🛏️ <strong>Room:</strong>
+                            Deluxe Room
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 41001
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>
+                            ₹2,500 / night
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Ooty">
+
+                <img
+                    src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Misty Mountain Stay"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Misty Mountain Stay
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Coonoor Road
+                        </p>
+
+                        <p>
+                            🛏️ <strong>Room:</strong>
+                            Mountain View
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 41002
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>
+                            ₹3,200 / night
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Ooty">
+
+                <img
+                    src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Green Valley Hotel"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Green Valley Hotel
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.6
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Lovedale
+                        </p>
+
+                        <p>
+                            🛏️ <strong>Room:</strong>
+                            Standard Room
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 41003
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>
+                            ₹2,100 / night
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Ooty">
+
+                <img
+                    src="https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Cloud View Resort"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Cloud View Resort
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.9
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Doddabetta Road
+                        </p>
+
+                        <p>
+                            🛏️ <strong>Room:</strong>
+                            Premium Suite
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 41004
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>
+                            ₹4,500 / night
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Ooty">
+
+                <img
+                    src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Rosewood Inn"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Rosewood Inn
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.5
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Charing Cross
+                        </p>
+
+                        <p>
+                            🛏️ <strong>Room:</strong>
+                            Family Room
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 41005
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>
+                            ₹2,800 / night
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Ooty">
+
+                <img
+                    src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Pine Forest Stay"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Pine Forest Stay
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="hotel-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Fern Hill
+                        </p>
+
+                        <p>
+                            🛏️ <strong>Room:</strong>
+                            Cottage Room
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 41006
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>
+                            ₹3,600 / night
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= KODAIKANAL ================= -->
+
+
+            <div class="hotel-card" data-city="Kodaikanal">
+
+                <img
+                    src="https://images.unsplash.com/photo-1602002418082-a4443e081dd1?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Kodai Lake Resort"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Kodai Lake Resort
+                    </div>
+
+                    <div class="rating">⭐ 4.8</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Kodaikanal, Observatory Road</p>
+
+                        <p>🛏️ <strong>Room:</strong> Lake View Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 42001
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹3,500 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Kodaikanal">
+
+                <img
+                    src="https://images.unsplash.com/photo-1568084680786-a84f91d1153c?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Pine Valley Resort"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Pine Valley Resort
+                    </div>
+
+                    <div class="rating">⭐ 4.7</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Kodaikanal, Naidupuram</p>
+
+                        <p>🛏️ <strong>Room:</strong> Deluxe Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 42002
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹2,900 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Kodaikanal">
+
+                <img
+                    src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Kodai Blossom Hotel"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Kodai Blossom Hotel
+                    </div>
+
+                    <div class="rating">⭐ 4.6</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Kodaikanal, Anna Salai</p>
+
+                        <p>🛏️ <strong>Room:</strong> Garden View</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 42003
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹2,400 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Kodaikanal">
+
+                <img
+                    src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Silver Mountain Stay"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Silver Mountain Stay
+                    </div>
+
+                    <div class="rating">⭐ 4.9</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Kodaikanal, Vattakanal</p>
+
+                        <p>🛏️ <strong>Room:</strong> Luxury Suite</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 42004
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹5,200 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Kodaikanal">
+
+                <img
+                    src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Sunrise Residency"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Sunrise Residency
+                    </div>
+
+                    <div class="rating">⭐ 4.5</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Kodaikanal, Laws Ghat Road</p>
+
+                        <p>🛏️ <strong>Room:</strong> Standard Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 42005
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹2,200 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Kodaikanal">
+
+                <img
+                    src="https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Valley View Cottage"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Valley View Cottage
+                    </div>
+
+                    <div class="rating">⭐ 4.7</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Kodaikanal, Vilpatti</p>
+
+                        <p>🛏️ <strong>Room:</strong> Cottage Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 42006
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹3,800 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MUNNAR ================= -->
+
+
+            <div class="hotel-card" data-city="Munnar">
+
+                <img
+                    src="https://images.unsplash.com/photo-1540541338287-41700207dee6?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Tea Garden Resort"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Tea Garden Resort
+                    </div>
+
+                    <div class="rating">⭐ 4.9</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Munnar, Chithirapuram</p>
+
+                        <p>🛏️ <strong>Room:</strong> Garden View</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 43001
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹4,200 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Munnar">
+
+                <img
+                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Munnar Heights"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Munnar Heights
+                    </div>
+
+                    <div class="rating">⭐ 4.8</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Munnar, Pallivasal</p>
+
+                        <p>🛏️ <strong>Room:</strong> Mountain View</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 43002
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹4,800 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Munnar">
+
+                <img
+                    src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Misty Hills Resort"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Misty Hills Resort
+                    </div>
+
+                    <div class="rating">⭐ 4.7</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Munnar, Devikulam</p>
+
+                        <p>🛏️ <strong>Room:</strong> Deluxe Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 43003
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹3,600 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Munnar">
+
+                <img
+                    src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Green Woods Hotel"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Green Woods Hotel
+                    </div>
+
+                    <div class="rating">⭐ 4.6</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Munnar, Attukad</p>
+
+                        <p>🛏️ <strong>Room:</strong> Family Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 43004
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹3,100 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Munnar">
+
+                <img
+                    src="https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Nature Nest Stay"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Nature Nest Stay
+                    </div>
+
+                    <div class="rating">⭐ 4.5</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Munnar, Anachal</p>
+
+                        <p>🛏️ <strong>Room:</strong> Standard Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 43005
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹2,600 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Munnar">
+
+                <img
+                    src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Sunrise Peak Resort"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Sunrise Peak Resort
+                    </div>
+
+                    <div class="rating">⭐ 4.8</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Munnar, Pothamedu</p>
+
+                        <p>🛏️ <strong>Room:</strong> Premium Suite</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 43006
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹5,500 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= BANGALORE ================= -->
+
+
+            <div class="hotel-card" data-city="Bangalore">
+
+                <img
+                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Bangalore Grand Hotel"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Bangalore Grand Hotel
+                    </div>
+
+                    <div class="rating">⭐ 4.8</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Bangalore, MG Road</p>
+
+                        <p>🛏️ <strong>Room:</strong> Deluxe Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 44001
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹4,500 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Bangalore">
+
+                <img
+                    src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Metro Comfort Inn"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Metro Comfort Inn
+                    </div>
+
+                    <div class="rating">⭐ 4.6</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Bangalore, Indiranagar</p>
+
+                        <p>🛏️ <strong>Room:</strong> Standard Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 44002
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹2,900 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Bangalore">
+
+                <img
+                    src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="City View Residency"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        City View Residency
+                    </div>
+
+                    <div class="rating">⭐ 4.7</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Bangalore, Koramangala</p>
+
+                        <p>🛏️ <strong>Room:</strong> City View Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 44003
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹3,700 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Bangalore">
+
+                <img
+                    src="https://images.unsplash.com/photo-1601918774946-25832a4be0d6?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Royal Orchid Stay"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Royal Orchid Stay
+                    </div>
+
+                    <div class="rating">⭐ 4.9</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Bangalore, Whitefield</p>
+
+                        <p>🛏️ <strong>Room:</strong> Luxury Suite</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 44004
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹6,500 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Bangalore">
+
+                <img
+                    src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Green Park Hotel"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Green Park Hotel
+                    </div>
+
+                    <div class="rating">⭐ 4.5</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Bangalore, Jayanagar</p>
+
+                        <p>🛏️ <strong>Room:</strong> Family Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 44005
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹3,300 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="hotel-card" data-city="Bangalore">
+
+                <img
+                    src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?auto=format&fit=crop&w=800&q=80"
+                    class="hotel-image"
+                    alt="Urban Nest Hotel"
+                >
+
+                <div class="hotel-content">
+
+                    <div class="hotel-name">
+                        Urban Nest Hotel
+                    </div>
+
+                    <div class="rating">⭐ 4.7</div>
+
+                    <div class="hotel-info">
+
+                        <p>📍 <strong>Location:</strong> Bangalore, HSR Layout</p>
+
+                        <p>🛏️ <strong>Room:</strong> Premium Room</p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong> +91 98765 44006
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Starting from</small>
+
+                        <strong>₹4,100 / night</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+            ✨ TravelGo — Find Your Perfect Stay 🏨💜
+        </div>
+
+
+    </main>
+
+
+    <script>
+
+        function searchHotels() {
+
+            const destination =
+                document.getElementById(
+                    "destination"
+                ).value;
+
+
+            const hotelCards =
+                document.querySelectorAll(
+                    ".hotel-card"
+                );
+
+
+            const resultsTitle =
+                document.getElementById(
+                    "resultsTitle"
+                );
+
+
+            if (!destination) {
+
+                alert(
+                    "Please select a destination first."
+                );
+
+                return;
+
+            }
+
+
+            hotelCards.forEach(
+                function(card) {
+
+                    card.classList.remove(
+                        "show"
+                    );
+
+                }
+            );
+
+
+            hotelCards.forEach(
+                function(card) {
+
+                    if (
+                        card.getAttribute(
+                            "data-city"
+                        ) === destination
+                    ) {
+
+                        card.classList.add(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            resultsTitle.textContent =
+                "🏨 Best Hotels in " +
+                destination;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>

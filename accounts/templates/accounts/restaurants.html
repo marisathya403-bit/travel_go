@@ -1,0 +1,2123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Nearby Restaurants - TravelGo</title>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", Arial, sans-serif;
+        }
+
+
+        body {
+
+            min-height: 100vh;
+
+            background: linear-gradient(
+                120deg,
+                #667eea,
+                #764ba2,
+                #ff758c,
+                #00c6ff
+            );
+
+            background-size: 400% 400%;
+
+            animation: gradientMove 12s ease infinite;
+
+            overflow-x: hidden;
+
+        }
+
+
+        @keyframes gradientMove {
+
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+
+        }
+
+
+        /* NAVBAR */
+
+        .navbar {
+
+            width: 100%;
+
+            padding: 18px 7%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background: rgba(255,255,255,0.15);
+
+            backdrop-filter: blur(15px);
+
+            border-bottom:
+                1px solid rgba(255,255,255,0.3);
+
+        }
+
+
+        .logo {
+
+            color: white;
+
+            font-size: 28px;
+
+            font-weight: 800;
+
+        }
+
+
+        .logo span {
+
+            color: #ffe66d;
+
+        }
+
+
+        .back-home {
+
+            text-decoration: none;
+
+            color: white;
+
+            padding: 10px 20px;
+
+            border-radius: 25px;
+
+            border:
+                1px solid rgba(255,255,255,0.5);
+
+            font-weight: 600;
+
+            transition: 0.3s;
+
+        }
+
+
+        .back-home:hover {
+
+            background: white;
+
+            color: #764ba2;
+
+            transform: translateY(-3px);
+
+        }
+
+
+        /* MAIN */
+
+        .container {
+
+            width: 92%;
+
+            max-width: 1200px;
+
+            margin: 45px auto;
+
+        }
+
+
+        /* HEADING */
+
+        .heading {
+
+            text-align: center;
+
+            color: white;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .heading h1 {
+
+            font-size: 42px;
+
+            margin-bottom: 10px;
+
+            text-shadow:
+                0 5px 20px rgba(0,0,0,0.25);
+
+        }
+
+
+        .heading p {
+
+            font-size: 16px;
+
+        }
+
+
+        /* SEARCH BOX */
+
+        .search-box {
+
+            max-width: 700px;
+
+            margin: auto;
+
+            background: rgba(255,255,255,0.95);
+
+            padding: 25px;
+
+            border-radius: 22px;
+
+            box-shadow:
+                0 20px 50px rgba(0,0,0,0.2);
+
+            display: flex;
+
+            gap: 15px;
+
+            align-items: end;
+
+            margin-bottom: 45px;
+
+        }
+
+
+        .field {
+
+            flex: 1;
+
+        }
+
+
+        .field label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #555;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+        }
+
+
+        .field select {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: 2px solid #e5e5e5;
+
+            border-radius: 12px;
+
+            font-size: 15px;
+
+            outline: none;
+
+        }
+
+
+        .field select:focus {
+
+            border-color: #764ba2;
+
+        }
+
+
+        .search-btn {
+
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                90deg,
+                #ff758c,
+                #764ba2
+            );
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+        .search-btn:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(118,75,162,0.35);
+
+        }
+
+
+        /* RESULTS */
+
+        .results-title {
+
+            color: white;
+
+            text-align: center;
+
+            font-size: 28px;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        /* RESTAURANT GRID */
+
+        .restaurant-grid {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 22px;
+
+        }
+
+
+        /* RESTAURANT CARD */
+
+        .restaurant-card {
+
+            background: rgba(255,255,255,0.97);
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 18px 40px rgba(0,0,0,0.2);
+
+            transition: 0.3s;
+
+            display: none;
+
+        }
+
+
+        .restaurant-card.show {
+
+            display: block;
+
+            animation:
+                restaurantIn 0.5s ease;
+
+        }
+
+
+        @keyframes restaurantIn {
+
+            from {
+
+                opacity: 0;
+
+                transform:
+                    translateY(30px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+
+            }
+
+        }
+
+
+        .restaurant-card:hover {
+
+            transform:
+                translateY(-8px);
+
+            box-shadow:
+                0 25px 50px rgba(0,0,0,0.25);
+
+        }
+
+
+        /* IMAGE */
+
+        .restaurant-image {
+
+            width: 100%;
+
+            height: 210px;
+
+            object-fit: cover;
+
+            display: block;
+
+        }
+
+
+        /* CONTENT */
+
+        .restaurant-content {
+
+            padding: 20px;
+
+        }
+
+
+        .restaurant-name {
+
+            color: #51358c;
+
+            font-size: 21px;
+
+            font-weight: 800;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .rating {
+
+            display: inline-block;
+
+            background: #fff3cd;
+
+            color: #b77900;
+
+            padding: 6px 10px;
+
+            border-radius: 20px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .restaurant-info {
+
+            border-top:
+                1px solid #eee;
+
+            padding-top: 12px;
+
+        }
+
+
+        .restaurant-info p {
+
+            color: #666;
+
+            font-size: 14px;
+
+            margin: 9px 0;
+
+            line-height: 1.5;
+
+        }
+
+
+        .restaurant-info strong {
+
+            color: #333;
+
+        }
+
+
+        .contact {
+
+            color: #764ba2 !important;
+
+            font-weight: 600;
+
+        }
+
+
+        .price {
+
+            margin-top: 15px;
+
+            padding-top: 15px;
+
+            border-top:
+                1px solid #eee;
+
+        }
+
+
+        .price small {
+
+            display: block;
+
+            color: #999;
+
+        }
+
+
+        .price strong {
+
+            color: #ff4f81;
+
+            font-size: 22px;
+
+        }
+
+
+        /* FOOTER */
+
+        .footer {
+
+            text-align: center;
+
+            color: white;
+
+            margin: 50px 0 25px;
+
+            opacity: 0.9;
+
+        }
+
+
+        /* RESPONSIVE */
+
+        @media (max-width: 900px) {
+
+            .restaurant-grid {
+
+                grid-template-columns:
+                    repeat(2, 1fr);
+
+            }
+
+        }
+
+
+        @media (max-width: 600px) {
+
+            .navbar {
+
+                padding: 15px 5%;
+
+            }
+
+
+            .logo {
+
+                font-size: 22px;
+
+            }
+
+
+            .heading h1 {
+
+                font-size: 32px;
+
+            }
+
+
+            .search-box {
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+            }
+
+
+            .restaurant-grid {
+
+                grid-template-columns:
+                    1fr;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            🧳 Travel<span>Go</span>
+
+        </div>
+
+
+        <a
+            href="{% url 'home' %}"
+            class="back-home"
+        >
+
+            ← Back to Home
+
+        </a>
+
+    </nav>
+
+
+    <!-- MAIN -->
+
+    <main class="container">
+
+
+        <!-- HEADING -->
+
+        <div class="heading">
+
+            <h1>
+                🍽️ Discover Nearby Restaurants
+            </h1>
+
+            <p>
+                Find delicious food for your next journey 😋✨
+            </p>
+
+        </div>
+
+
+        <!-- SEARCH -->
+
+        <div class="search-box">
+
+            <div class="field">
+
+                <label>
+                    📍 Select Destination
+                </label>
+
+                <select id="destination">
+
+                    <option value="">
+                        Select Destination
+                    </option>
+
+                    <option value="Ooty">
+                        Ooty
+                    </option>
+
+                    <option value="Kodaikanal">
+                        Kodaikanal
+                    </option>
+
+                    <option value="Munnar">
+                        Munnar
+                    </option>
+
+                    <option value="Bangalore">
+                        Bangalore
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="search-btn"
+                onclick="searchRestaurants()"
+            >
+
+                🔍 Search Restaurants
+
+            </button>
+
+        </div>
+
+
+        <!-- RESULT TITLE -->
+
+        <h2
+            class="results-title"
+            id="resultsTitle"
+        >
+
+            Select a destination to find restaurants 🍽️
+
+        </h2>
+
+
+        <!-- RESTAURANT GRID -->
+
+        <section class="restaurant-grid">
+
+
+            <!-- ================= OOTY ================= -->
+
+            <div class="restaurant-card" data-city="Ooty">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Ooty Spice Kitchen
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.8
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Charing Cross
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            South Indian & Chinese
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Chicken Biryani
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 51001
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹800</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Ooty">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Misty Mountain Cafe
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Coonoor Road
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Cafe & Continental
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Wood Fired Pizza
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 51002
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹900</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Ooty">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant interior"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Green Leaf Restaurant
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.6
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Ettines Road
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Pure Vegetarian
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            South Indian Meals
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 51003
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹600</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Ooty">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80"
+                    alt="Pizza restaurant"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Hillside Bistro
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.9
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Lovedale
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Italian & Continental
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Pasta & Pizza
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 51004
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹1,200</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Ooty">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=800&q=80"
+                    alt="Healthy food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Garden View Cafe
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.5
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Botanical Garden Road
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Cafe & Snacks
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Sandwich & Coffee
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 51005
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹500</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Ooty">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&w=800&q=80"
+                    alt="Indian food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Royal Ooty Dining
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Ooty, Commercial Road
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            North Indian
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Butter Chicken
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 51006
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹1,000</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= KODAIKANAL ================= -->
+
+            <div class="restaurant-card" data-city="Kodaikanal">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80"
+                    alt="Food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Kodai Lake Kitchen
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.8
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Kodaikanal, Observatory Road
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            South Indian
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Chettinad Chicken
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 52001
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹850</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Kodaikanal">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80"
+                    alt="Cafe"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Pine Valley Cafe
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Kodaikanal, Anna Salai
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Cafe & Bakery
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Chocolate Brownie
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 52002
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹600</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Kodaikanal">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Kodai Spice House
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.6
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Kodaikanal, Naidupuram
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Indian & Chinese
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Tandoori Chicken
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 52003
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹900</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Kodaikanal">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1508424757105-b6d5ad9329d0?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Silver Mountain Cafe
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.9
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Kodaikanal, Vattakanal
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Continental
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Grilled Chicken
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 52004
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹1,100</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Kodaikanal">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=800&q=80"
+                    alt="Food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Sunrise Family Restaurant
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.5
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Kodaikanal, Laws Ghat Road
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            South Indian & Veg
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Mini Tiffin
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 52005
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹550</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Kodaikanal">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1572449043416-55f4685c9bb7?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant meal"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Valley View Bistro
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Kodaikanal, Vilpatti
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Multi Cuisine
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Sizzlers
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 52006
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹1,000</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MUNNAR ================= -->
+
+            <div class="restaurant-card" data-city="Munnar">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&w=800&q=80"
+                    alt="Indian cuisine"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Tea Garden Restaurant
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.9
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Munnar, Chithirapuram
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Kerala & Indian
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Kerala Fish Curry
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 53001
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹900</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Munnar">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant meal"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Munnar Spice Garden
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.8
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Munnar, Pallivasal
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Indian & Chinese
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Pepper Chicken
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 53002
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹950</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Munnar">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=800&q=80"
+                    alt="Cafe food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Misty Hills Cafe
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Munnar, Devikulam
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Cafe & Continental
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Pasta & Coffee
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 53003
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹750</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Munnar">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=800&q=80"
+                    alt="Indian restaurant"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Green Woods Kitchen
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.6
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Munnar, Attukad
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Kerala Traditional
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Kerala Meals
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 53004
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹650</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Munnar">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Nature Nest Cafe
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.5
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Munnar, Anachal
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Snacks & Cafe
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Tea & Sandwich
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 53005
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹500</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Munnar">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80"
+                    alt="Fine dining"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Sunrise Peak Dining
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.8
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Munnar, Pothamedu
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Multi Cuisine
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Grilled Fish
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 53006
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹1,200</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= BANGALORE ================= -->
+
+            <div class="restaurant-card" data-city="Bangalore">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Bangalore Grand Kitchen
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.8
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Bangalore, MG Road
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Multi Cuisine
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Butter Chicken
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 54001
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹1,500</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Bangalore">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1553621042-f6e147245754?auto=format&fit=crop&w=800&q=80"
+                    alt="Food restaurant"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Metro Food House
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.6
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Bangalore, Indiranagar
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Fast Food & Chinese
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Chicken Burger
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 54002
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹800</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Bangalore">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant dining"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        City View Bistro
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Bangalore, Koramangala
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Continental
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Steak & Pasta
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 54003
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹1,400</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Bangalore">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1544148103-0773bf10d330?auto=format&fit=crop&w=800&q=80"
+                    alt="Fine dining restaurant"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Royal Orchid Dining
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.9
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Bangalore, Whitefield
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Fine Dining
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Chef's Special Platter
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 54004
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹2,000</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Bangalore">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=800&q=80"
+                    alt="Restaurant food"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Green Park Restaurant
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.5
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Bangalore, Jayanagar
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Vegetarian
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            South Indian Thali
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 54005
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹700</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="restaurant-card" data-city="Bangalore">
+
+                <img
+                    class="restaurant-image"
+                    src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?auto=format&fit=crop&w=800&q=80"
+                    alt="Breakfast cafe"
+                >
+
+                <div class="restaurant-content">
+
+                    <div class="restaurant-name">
+                        Urban Nest Cafe
+                    </div>
+
+                    <div class="rating">
+                        ⭐ 4.7
+                    </div>
+
+                    <div class="restaurant-info">
+
+                        <p>
+                            📍 <strong>Location:</strong>
+                            Bangalore, HSR Layout
+                        </p>
+
+                        <p>
+                            🍛 <strong>Cuisine:</strong>
+                            Cafe & Bakery
+                        </p>
+
+                        <p>
+                            🍽️ <strong>Special:</strong>
+                            Pancakes & Coffee
+                        </p>
+
+                        <p class="contact">
+                            📞 <strong>Contact:</strong>
+                            +91 98765 54006
+                        </p>
+
+                    </div>
+
+                    <div class="price">
+
+                        <small>Average cost for two</small>
+
+                        <strong>₹900</strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            ✨ TravelGo — Discover Delicious Places 🍽️💜
+
+        </div>
+
+
+    </main>
+
+
+    <script>
+
+        function searchRestaurants() {
+
+            const destination =
+                document.getElementById(
+                    "destination"
+                ).value;
+
+
+            const restaurantCards =
+                document.querySelectorAll(
+                    ".restaurant-card"
+                );
+
+
+            const resultsTitle =
+                document.getElementById(
+                    "resultsTitle"
+                );
+
+
+            if (!destination) {
+
+                alert(
+                    "Please select a destination first."
+                );
+
+                return;
+
+            }
+
+
+            /* Hide all restaurants */
+
+            restaurantCards.forEach(
+                function(card) {
+
+                    card.classList.remove(
+                        "show"
+                    );
+
+                }
+            );
+
+
+            /* Show selected destination restaurants */
+
+            restaurantCards.forEach(
+                function(card) {
+
+                    if (
+                        card.getAttribute(
+                            "data-city"
+                        ) === destination
+                    ) {
+
+                        card.classList.add(
+                            "show"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /* Update title */
+
+            resultsTitle.textContent =
+                "🍽️ Best Restaurants in " +
+                destination;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
